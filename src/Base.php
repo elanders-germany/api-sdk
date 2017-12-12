@@ -5,49 +5,33 @@ namespace elanders;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
+use elanders\ApiRequestException;
+use elanders\ApiResponseException;
 
 class Base
 {
 
 	const API_URL				 = 'https://api.pdi.elanders-germany.com/api/v1';
 	const API_URL_SANDBOX		 = 'https://sandbox.api.pdi.elanders-germany.com/api/v1';
-	const API_AUTH_URL		 = 'https://api.pdi.elanders-germany.com/api/authorize/';
-	const API_AUTH_URL_SANDBOX = 'https://sandbox.api.pdi.elanders-germany.com/api/authorize/';
+	const API_AUTH_URL		     = 'https://api.pdi.elanders-germany.com/api/authorize';
+	const API_AUTH_URL_SANDBOX   = 'https://sandbox.api.pdi.elanders-germany.com/api/authorize';
 
 	protected $client;
 	protected $sandbox;
 	protected $token;
 	protected $identifier;
 	protected $secret;
+	protected $logger;
 
 	/**
 	 * __construct
 	 */
-	public function __construct ()
+	public function __construct (bool $sandbox = true)
 	{
 		$config			 = [];
 		$this->client	 = new \GuzzleHttp\Client($config);
-	}
 
-	/**
-	 * setMode
-	 * 
-	 * @param bool $sandbox true|false
-	 */
-	public function setMode ($sandbox = true)
-	{
 		$this->sandbox = $sandbox;
-	}
-
-	/**
-	 * setAuth
-	 * 
-	 * @param string $user
-	 * @param string $password
-	 */
-	public function setAuth ($token)
-	{
-		$this->token = $token;
 	}
 
 	/**
@@ -56,10 +40,36 @@ class Base
 	 * @param string $identifier
 	 * @param string $secret
 	 */
-	public function setCredentials ($identifier, $secret)
+	public function setCredentials (string $identifier, string $secret)
 	{
+		if (trim($identifier) == '')
+		{
+			throw new ApiRequestException("identifier can't be blank");
+		}
+
+		if (trim($secret) == '')
+		{
+			throw new ApiRequestException("secret can't be blank");
+		}
+
 		$this->identifier	 = $identifier;
 		$this->secret		 = $secret;
+	}
+
+	/**
+	 * setAuth
+	 * 
+	 * @param string $user
+	 * @param string $password
+	 */
+	public function setAuth (string $token)
+	{
+		if (trim($token) == '')
+		{
+			throw new ApiRequestException("token can't be blank. Maybe you want to request one first with getToken() ?");
+		}
+
+		$this->token = $token;
 	}
 
 	/**
@@ -70,8 +80,13 @@ class Base
 	 * @param array $post
 	 * @return array
 	 */
-	protected function callAPI ($method, $request, $post = [])
+	protected function callAPI (string $method, string $request, array $post = [])
 	{
+		if (trim($this->token) == '')
+		{
+			throw new ApiRequestException("token can't be blank. Use setAuth() first.");
+		}
+
 		try
 		{
 			$url = self::API_URL . $request;
@@ -102,19 +117,27 @@ class Base
 		}
 		catch (RequestException $e)
 		{
-			$response = $this->statusCodeHandling($e);
-
-			return $response;
+			$this->handleException($e);
 		}
 	}
 
 	/**
 	 * getAuthToken
 	 * 
-	 * @return string
+	 * @return array
 	 */
 	protected function getAuthToken ()
 	{
+		if (trim($this->identifier) == '')
+		{
+			throw new ApiRequestException("identifier can't be blank. Use setCredentials() first.");
+		}
+
+		if (trim($this->secret) == '')
+		{
+			throw new ApiRequestException("secret can't be blank. Use setCredentials() first.");
+		}
+
 		try
 		{
 			$url = self::API_AUTH_URL;
@@ -143,26 +166,22 @@ class Base
 		}
 		catch (RequestException $e)
 		{
-			$response = $this->statusCodeHandling($e);
-
-			return $response;
+			$this->handleException($e);
 		}
 	}
 
 	/**
 	 * statusCodeHandling
 	 * 
-	 * @param type $e
-	 * @return array
+	 * @param object $e
+	 * @throws ApiException
 	 */
-	protected function statusCodeHandling ($e)
+	protected function handleException (RequestException $e)
 	{
-		$result = json_decode($e->getResponse()->getBody(true)->getContents());
-
-		$message = $result->error;
+		$result	 = json_decode($e->getResponse()->getBody(true)->getContents());
 		$code	 = $e->getResponse()->getStatusCode();
 
-		throw new \Exception($message, $code);
+		throw new ApiResponseException($code, $result, $e);
 	}
 
 }

@@ -2,6 +2,8 @@
 
 namespace elanders\Client;
 
+use elanders\ApiRequestException;
+
 class Orders extends \elanders\Base
 {
 
@@ -9,114 +11,114 @@ class Orders extends \elanders\Base
 	 * createOrder
 	 * 
 	 * @param array $orderData
-	 * @return int
+	 * @return string Transaction reference
 	 */
-	public function createOrder ($orderData)
+	public function createOrder (array $orderData)
 	{
-		try
+		if (empty($orderData) === true)
 		{
-			$url		 = '/orders';
-			$response	 = $this->callAPI('POST', $url, $orderData);
-
-			return $response->transactionReference;
+			throw new ApiRequestException("orderData can't be empty");
 		}
-		catch (RequestException $e)
-		{
-			$response = $this->StatusCodeHandling($e);
 
-			return $response;
-		}
+		$url		 = '/orders';
+		$response	 = $this->callAPI('POST', $url, $orderData);
+
+		return $response->transactionReference;
 	}
 
 	/**
 	 * getOrders
 	 * 
-	 * @return array of order objects
+	 * @return array Array of order objects
 	 */
 	public function getOrders ()
 	{
-		try
-		{
-			$url		 = '/orders';
-			$response	 = $this->callAPI('GET', $url);
+		$url		 = '/orders';
+		$response	 = $this->callAPI('GET', $url);
 
-			return $response->orders;
-		}
-		catch (RequestException $e)
-		{
-			$response = $this->StatusCodeHandling($e);
+		return $response->orders;
+	}
 
-			return $response;
+	/**
+	 * getOrder
+	 * 
+	 * @param string $transactionReference
+	 * @return object Object with order data
+	 */
+	public function getOrder (string $transactionReference)
+	{
+		if (trim($transactionReference) == '')
+		{
+			throw new ApiRequestException("transactionReference can't be blank");
 		}
+
+		$url		 = '/orders/' . $transactionReference;
+		$response	 = $this->callAPI('GET', $url);
+
+		return $response;
 	}
 
 	/**
 	 * cancelOrder
 	 * 
 	 * @param int $transactionReference
-	 * @return array
+	 * @return bool True on success
 	 */
-	public function cancelOrder ($transactionReference)
+	public function cancelOrder (string $transactionReference)
 	{
-		try
+		if (trim($transactionReference) == '')
 		{
-			$url		 = '/orders/' . $transactionReference;
-			$response	 = $this->callAPI('DELETE', $url);
-
-			return true;
+			throw new ApiRequestException("transactionReference can't be blank");
 		}
-		catch (RequestException $e)
-		{
-			$response = $this->StatusCodeHandling($e);
 
-			return $response;
-		}
+		$url		 = '/orders/' . $transactionReference;
+		$response	 = $this->callAPI('DELETE', $url);
+
+		return true;
 	}
 
 	/**
-	 * getReceipientAddressOfOrder
+	 * getAddressOfOrder
 	 * 
-	 * @param int $transactionReference
-	 * @return array
+	 * @param string $transactionReference
+	 * @return array Array with address data
 	 */
-	public function getReceipientAddressOfOrder ($transactionReference)
+	public function getAddressOfOrder ($transactionReference)
 	{
-		try
+		if (trim($transactionReference) == '')
 		{
-			$url		 = '/orders/' . $transactionReference . '/recipientAddress';
-			$response	 = $this->callAPI('GET', $url);
-
-			return $response;
+			throw new ApiRequestException("transactionReference can't be blank");
 		}
-		catch (RequestException $e)
-		{
-			$response = $this->StatusCodeHandling($e);
 
-			return $response;
-		}
+		$url		 = '/orders/' . $transactionReference . '/orderAddress';
+		$response	 = $this->callAPI('GET', $url);
+
+		return $response;
 	}
 
 	/**
-	 * changeReceipientAddressOfOrder
+	 * changeAddressOfOrder
 	 * 
-	 * @param type $transactionReference
-	 * @return type
+	 * @param string $transactionReference
+	 * @param array $addressData
+	 * @return true True on success
 	 */
-	public function changeReceipientAddressOfOrder ($transactionReference, $addressData)
+	public function changeAddressOfOrder ($transactionReference, $addressData)
 	{
-		try
+		if (trim($transactionReference) == '')
 		{
-			$url		 = '/orders/' . $transactionReference . '/recipientAddress';
-			$response	 = $this->callAPI('GET', $url, $addressData);
-
-			return $response;
+			throw new ApiRequestException("transactionReference can't be blank");
 		}
-		catch (RequestException $e)
+
+		if (empty($addressData) === true)
 		{
-			$response = $this->StatusCodeHandling($e);
-
-			return $response;
+			throw new ApiRequestException("addressData can't be empty");
 		}
+
+		$url		 = '/orders/' . $transactionReference . '/orderAddress';
+		$response	 = $this->callAPI('PUT', $url, $addressData);
+
+		return true;
 	}
 
 }

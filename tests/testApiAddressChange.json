@@ -1,0 +1,30 @@
+{
+	"shipperAddress": {
+		"reference": "xxx",
+		"company": "Company New",
+		"firstName": "",
+		"lastName": "",
+		"details": "",
+		"street": "New Sample Street 99",
+		"city": "New City",
+		"postalCode": "98765",
+		"countryCode": "",
+		"stateOrProvince": "",
+		"phone": "+9900000000000",
+		"email": "test@new.com"
+	},
+	"recipientAddress": {
+		"reference": "",
+		"company": " ",
+		"firstName": "New Sam",
+		"lastName": "Sample",
+		"details": "",
+		"street": "Sam Sample Street 1",
+		"city": "Sam City",
+		"postalCode": "33333",
+		"countryCode": "DE",
+		"stateOrProvince": "",
+		"phone": "",
+		"email": "sam@sample.com"
+	}
+}

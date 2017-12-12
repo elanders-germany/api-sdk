@@ -2,29 +2,31 @@
 
 namespace elanders\Client;
 
+use elanders\ApiRequestException;
+
 class Auth extends \elanders\Base
 {
 
 	/**
 	 * getToken
 	 * 
-	 * @param type $orderId
-	 * @return type
+	 * @return string Token
 	 */
 	public function getToken ()
 	{
-		try
+		if (trim($this->identifier) == '')
 		{
-			$response = $this->getAuthToken();
-
-			return $response->access_token;
+			throw new ApiRequestException("identifier can't be blank. Use setCredentials() first.");
 		}
-		catch (RequestException $e)
+
+		if (trim($this->secret) == '')
 		{
-			$response = $this->StatusCodeHandling($e);
-
-			return $response;
+			throw new ApiRequestException("secret can't be blank. Use setCredentials() first.");
 		}
+
+		$response = $this->getAuthToken();
+
+		return $response->access_token;
 	}
 
 }

@@ -3,7 +3,7 @@ Elanders API SDK
 
 Elanders RESTful-API - Your interface to Elanders.
 
-Drop-Shipping Service to sent personalized content to your end-customers or as supply chain solution with just in sequence delivery. 
+Drop-Shipping Service to sent personalized content (print on demand) to your end-customers or as supply chain solution with just in sequence delivery. 
 Elanders Print and Packaging is a leader in print innovation, packaging and web-to-business services. 
 
 
@@ -24,7 +24,7 @@ Installation with Composer:
 Requirements:
 --------
 
-* php >= 5.6
+* php >= 7.0
 * guzzlehttp ~6.0
 * monolog >=1.23.0
 
