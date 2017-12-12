@@ -9,7 +9,6 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use elanders\Client\Auth;
 use elanders\Client\Orders;
-use elanders\Client\Products;
 use elanders\ApiRequestException;
 use elanders\ApiResponseException;
 
@@ -23,11 +22,13 @@ try
 	$testApi->getToken($yourIdentifier, $yourToken);
 
 	$transactionReference = $testApi->createOrder();
-
+	
+	// further sample requests
+	#$testApi->getOrders();
 	#$testApi->getOrder($transactionReference);
 	#$testApi->cancelOrder($transactionReference);
 	#$testApi->getAddressOfOrder($transactionReference);
-	#$testApi->changeAddressOfOrder($transactionReference);
+	#$testApi->setAddressOfOrder($transactionReference);
 }
 catch (\elanders\ApiRequestException $ex)
 {
@@ -80,7 +81,7 @@ class testApi
 	 * @param string $secret
 	 * @return string Token
 	 */
-	public function getToken (string $identifier, string $secret)
+	public function getToken ($identifier, $secret)
 	{
 		$this->log->debug('Gathering token');
 
@@ -119,8 +120,16 @@ class testApi
 	public function getOrders ()
 	{
 		$this->log->debug('Requesting list of your orders');
-		$orders = $this->ordersObj->getOrders();
-		$this->log->debug('Orders: ' . print_r($orders, true));
+
+		$params = [
+			'offset' => 0,
+			'limit'	 => 20,
+			'pretty' => true
+		];
+
+		$orders = $this->ordersObj->getOrders($params);
+		$this->log->debug('Orders: ' . print_r($orders->orders, true));
+		$this->log->debug('Total orders: ' . $orders->total);
 
 		return $orders;
 	}
@@ -130,7 +139,7 @@ class testApi
 	 * 
 	 * @return array Array with orders objects
 	 */
-	public function getOrder (string $transactionReference)
+	public function getOrder ($transactionReference)
 	{
 		$this->log->debug('Get data of order' . $transactionReference);
 		$order = $this->ordersObj->getOrder($transactionReference);
@@ -144,19 +153,19 @@ class testApi
 	 * 
 	 * @param string transactionReference
 	 */
-	public function cancelOrder (string $transactionReference)
+	public function cancelOrder ($transactionReference)
 	{
 		$this->log->debug('Cancelling order ' . $transactionReference);
 		$this->ordersObj->cancelOrder($transactionReference);
 	}
 
 	/**
-	 * getShippingAddressOfOrder
+	 * getAddressOfOrder
 	 * 
 	 * @param string transactionReference
-	 * @return object address data
+	 * @return array Array of address data
 	 */
-	public function getAddressOfOrder (string $transactionReference)
+	public function getAddressOfOrder ($transactionReference)
 	{
 		$this->log->debug('Gathering address of order ' . $transactionReference);
 		$address = $this->ordersObj->getAddressOfOrder($transactionReference);
@@ -168,16 +177,16 @@ class testApi
 	/**
 	 * changeAddressOfOrder
 	 * 
-	 * @param string $transactionReference
+	 * @param string transactionReference
 	 */
-	public function changeAddressOfOrder (string $transactionReference)
+	public function setAddressOfOrder ($transactionReference)
 	{
 		$this->log->debug('Change address of order ' . $transactionReference);
 
 		$addressData = json_decode(file_get_contents('testApiAddressChange.json'));
 		$this->log->debug('Address JSON file loaded: ' . print_r($addressData, true));
 
-		$addressChangeResult = $this->ordersObj->changeAddressOfOrder($transactionReference, $addressData);
+		$addressChangeResult = $this->ordersObj->setAddressOfOrder($transactionReference, $addressData);
 		$this->log->debug('Address changed. New saved address data are: ' . $addressChangeResult);
 	}
 

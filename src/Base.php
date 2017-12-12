@@ -26,7 +26,7 @@ class Base
 	/**
 	 * __construct
 	 */
-	public function __construct (bool $sandbox = true)
+	public function __construct ($sandbox = true)
 	{
 		$config			 = [];
 		$this->client	 = new \GuzzleHttp\Client($config);
@@ -40,7 +40,7 @@ class Base
 	 * @param string $identifier
 	 * @param string $secret
 	 */
-	public function setCredentials (string $identifier, string $secret)
+	public function setCredentials ($identifier, $secret)
 	{
 		if (trim($identifier) == '')
 		{
@@ -62,7 +62,7 @@ class Base
 	 * @param string $user
 	 * @param string $password
 	 */
-	public function setAuth (string $token)
+	public function setAuth ($token)
 	{
 		if (trim($token) == '')
 		{
@@ -75,16 +75,22 @@ class Base
 	/**
 	 * callAPI
 	 * 
-	 * @param string $method
-	 * @param string $request
-	 * @param array $post
-	 * @return array
+	 * @param string $method GET|POST|PUT|DELETE
+	 * @param string $request API-Route
+	 * @param array $post Array of data
+	 * @param array $params Array of optional additional options e.g. pager (key => value)
+	 * @return mixed Result of request
 	 */
-	protected function callAPI (string $method, string $request, array $post = [])
+	protected function callAPI ($method, $request, $post = [], $params = [])
 	{
 		if (trim($this->token) == '')
 		{
 			throw new ApiRequestException("token can't be blank. Use setAuth() first.");
+		}
+
+		if (empty($params) == false)
+		{
+			$request .= '?' . http_build_query($params);
 		}
 
 		try
@@ -124,7 +130,7 @@ class Base
 	/**
 	 * getAuthToken
 	 * 
-	 * @return array
+	 * @return mixed Result of request
 	 */
 	protected function getAuthToken ()
 	{

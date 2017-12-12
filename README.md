@@ -24,7 +24,7 @@ Installation with Composer:
 Requirements:
 --------
 
-* php >= 7.0
+* php >= 5.6
 * guzzlehttp ~6.0
 * monolog >=1.23.0
 

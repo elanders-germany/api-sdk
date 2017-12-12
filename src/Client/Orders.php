@@ -13,7 +13,7 @@ class Orders extends \elanders\Base
 	 * @param array $orderData
 	 * @return string Transaction reference
 	 */
-	public function createOrder (array $orderData)
+	public function createOrder ($orderData)
 	{
 		if (empty($orderData) === true)
 		{
@@ -31,12 +31,12 @@ class Orders extends \elanders\Base
 	 * 
 	 * @return array Array of order objects
 	 */
-	public function getOrders ()
+	public function getOrders ($params = [])
 	{
 		$url		 = '/orders';
-		$response	 = $this->callAPI('GET', $url);
+		$response	 = $this->callAPI('GET', $url, [], $params);
 
-		return $response->orders;
+		return $response;
 	}
 
 	/**
@@ -45,7 +45,7 @@ class Orders extends \elanders\Base
 	 * @param string $transactionReference
 	 * @return object Object with order data
 	 */
-	public function getOrder (string $transactionReference)
+	public function getOrder ($transactionReference)
 	{
 		if (trim($transactionReference) == '')
 		{
@@ -64,7 +64,7 @@ class Orders extends \elanders\Base
 	 * @param int $transactionReference
 	 * @return bool True on success
 	 */
-	public function cancelOrder (string $transactionReference)
+	public function cancelOrder ($transactionReference)
 	{
 		if (trim($transactionReference) == '')
 		{
@@ -103,7 +103,7 @@ class Orders extends \elanders\Base
 	 * @param array $addressData
 	 * @return true True on success
 	 */
-	public function changeAddressOfOrder ($transactionReference, $addressData)
+	public function setAddressOfOrder ($transactionReference, $addressData)
 	{
 		if (trim($transactionReference) == '')
 		{
