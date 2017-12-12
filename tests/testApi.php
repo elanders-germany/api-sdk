@@ -17,9 +17,9 @@ try
 	$testApi = new testApi();
 
 	$yourIdentifier	 = '<yourIdentifier>';
-	$yourToken		 = '<yourToken>';
+	$yourSecret		 = '<yourSecret>';
 
-	$testApi->getToken($yourIdentifier, $yourToken);
+	$testApi->getToken($yourIdentifier, $yourSecret);
 
 	$transactionReference = $testApi->createOrder();
 	
