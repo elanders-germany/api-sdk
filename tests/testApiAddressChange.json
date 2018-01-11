@@ -8,7 +8,7 @@
 		"street": "New Sample Street 99",
 		"city": "New City",
 		"postalCode": "98765",
-		"countryCode": "",
+		"countryCode": "DE",
 		"stateOrProvince": "",
 		"phone": "+9900000000000",
 		"email": "test@new.com"
