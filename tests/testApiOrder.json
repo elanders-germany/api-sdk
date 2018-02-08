@@ -3,6 +3,10 @@
     "$schema": "https://api.pdi.elanders-germany.com/v1/schema#",
     "order": {
         "reference": "myOrder123",
+		"complaint": {
+            "referenceCode": "",
+            "referenceOrder": ""
+        },
         "shipping": {
             "shipperAddress": {
                 "reference": "999",
