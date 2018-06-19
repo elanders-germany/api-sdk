@@ -22,7 +22,7 @@ class ApiResponseException extends \Exception
 		$this->httpResultCode	 = $httpStatusCode;
 		$this->errorMessage		 = $resultBody->error;
 		$this->errorCode		 = $resultBody->code;
-		$this->details			 = $resultBody->details;
+		$this->details			 = isset($resultBody->details) ? $resultBody->details : null;
 
 		parent::__construct($this->errorMessage, $this->errorCode, $previous);
 	}

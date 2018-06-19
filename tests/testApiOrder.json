@@ -1,97 +1,101 @@
 {
-    "pdiVersion": "3.0",
-    "$schema": "https://api.pdi.elanders-germany.com/v1/schema#",
-    "order": {
-        "reference": "myOrder123",
+	"pdiVersion": "3.0",
+	"$schema": "https://api.pdi.elanders-germany.com/v1/schema#",
+	"order": {
+		"reference": "myOrder123",
 		"complaint": {
-            "referenceCode": "",
-            "referenceOrder": ""
-        },
-        "shipping": {
-            "shipperAddress": {
-                "reference": "999",
-                "company": "My Company",
-                "firstName": "",
-                "lastName": "",
-                "details": "",
-                "street": "Sample Street 12",
-                "city": "SampleCity",
-                "postalCode": "12345",
-                "stateOrProvince": "",
-                "countryCode": "DE",
-                "phone": "",
-                "email": ""
-            },
-            "recipientAddress": {
-                "reference": "111",
-                "company": "",
-                "firstName": "Sam",
-                "lastName": "Sample",
-                "details": "",
-                "street": "Sample Street 3",
-                "city": "Sample Town",
-                "postalCode": "55555",
-                "stateOrProvince": "",
-                "countryCode": "DE",
-                "phone": "",
-                "email": ""
-            },
-            "serviceProvider": {
-                "id": "DHL",
-                "express": "false"
-            }
-        },
-        "invoicing": {
-            "sellerAddress": {
-                "reference": "",
-                "company": "",
-                "firstName": "",
-                "lastName": "",
-                "details": "",
-                "street": "",
-                "city": "",
-                "postalCode": "",
-                "stateOrProvince": "",
-                "countryCode": "",
-                "phone": "",
-                "email": ""
-            },
-            "sellerCompanyData": {
-                "taxNumber": "",
-                "vatId": "",
-                "commercialRegisterEntry": "",
-                "bankName": "",
-                "bankIban": "",
-                "bankBicOrSwift": "",
-                "bankAccountHolder": "",
-                "director": "",
-                "signature": "",
-                "eoriNumber": ""
-            }
-        },
-        "items": [{
-            "header": {
-                "reference": "wallcalA4",
-                "product": "A4CalendarPortrait",
-                "quantity": "1"
-            },
-            "costs": {"customsDeclaration": {
-                "productType": "",
-                "customsTariffNumber": "",
-                "countryOfOrigin": "",
-                "valueOfGoods": {
-                    "currency": "",
-                    "amount": ""
-                }
-            }},
-            "parts": [{
-                "productPart": "content",
-                "references": [{"name": "content"}]
-            }],
-            "data": [{
-                "name": "content",
-                "value": "https://portal.pdi.elanders-germany.com/data/docs/testApiOrderA4.pdf"
-            }]
-        }]
-    }
+			"referenceCode": "",
+			"referenceOrder": ""
+		},
+		"shipping": {
+			"shipperAddress": {
+				"reference": "999",
+				"company": "My Company",
+				"firstName": "",
+				"lastName": "",
+				"details": "",
+				"street": "Sample Street 12",
+				"city": "SampleCity",
+				"postalCode": "12345",
+				"stateOrProvince": "",
+				"countryCode": "DE",
+				"phone": "",
+				"email": ""
+			},
+			"recipientAddress": {
+				"reference": "111",
+				"company": "",
+				"firstName": "Sam",
+				"lastName": "Sample",
+				"details": "",
+				"street": "Sample Street 3",
+				"city": "Sample Town",
+				"postalCode": "55555",
+				"stateOrProvince": "",
+				"countryCode": "DE",
+				"phone": "",
+				"email": ""
+			},
+			"serviceProvider": {
+				"id": "DHL",
+				"express": "false"
+			}
+		},
+		"invoicing": {
+			"sellerAddress": {
+				"reference": "",
+				"company": "",
+				"firstName": "",
+				"lastName": "",
+				"details": "",
+				"street": "",
+				"city": "",
+				"postalCode": "",
+				"stateOrProvince": "",
+				"countryCode": "",
+				"phone": "",
+				"email": ""
+			},
+			"sellerCompanyData": {
+				"taxNumber": "",
+				"vatId": "",
+				"commercialRegisterEntry": "",
+				"bankName": "",
+				"bankIban": "",
+				"bankBicOrSwift": "",
+				"bankAccountHolder": "",
+				"director": "",
+				"signature": "",
+				"eoriNumber": ""
+			}
+		},
+		"items": [{
+				"header": {
+					"reference": "wallcalA4",
+					"product": "A4CalendarPortrait",
+					"quantity": "1"
+				},
+				"costs": {
+					"customsDeclaration": {
+						"productType": "",
+						"customsTariffNumber": "",
+						"countryOfOrigin": "",
+						"valueOfGoods": {
+							"currency": "",
+							"amount": ""
+						}
+					}
+				},
+				"parts": [{
+						"productPart": "content",
+						"references": [{
+								"name": "content"
+							}]
+					}],
+				"data": [{
+						"name": "content",
+						"value": "https://portal.pdi.elanders-germany.com/data/docs/testApiOrderA4.pdf"
+					}]
+			}]
+	}
 }
